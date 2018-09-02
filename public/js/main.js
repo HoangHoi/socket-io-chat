@@ -27,6 +27,9 @@ $(function() {
     var users = [];
 
     var socket = io();
+    // var socket = io({
+    //     transports: ['polling', 'websocket']
+    // });
 
     $registerModal.modal({
         backdrop: 'static',
