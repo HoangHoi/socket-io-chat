@@ -1,0 +1,44 @@
+.sidebar {
+    position: fixed;
+    margin-top: 42px;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0px 15px 0 15px;
+    box-shadow: -1px 0 0 rgba(0, 0, 0, .1);
+    font-weight: 900;
+    overflow-y: auto;
+}
+
+[role="main"] {
+    padding-top: 48px;
+    padding-bottom: 80px;
+}
+
+.input-container {
+    background-color: #c5c5c5;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: fixed;
+    bottom: 0;
+}
+
+.user-name {
+    font-weight: 900;
+    color: cornflowerblue;
+    padding-right: 10px;
+}
+
+.user-name::after {
+    content: ':';
+}
+
+.typing {
+    color: #c5c5c5;
+}
+
+.user-typing-name {
+    font-size: 1.1em;
+    font-weight: 900;
+}
