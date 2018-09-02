@@ -38,6 +38,16 @@ const checkUserName = (username) => {
     return true;
 };
 
+const getAllUsers = () => {
+    var users = [];
+    const socketIds = Object.keys(io.sockets.sockets);
+    for (var i = 0; i < socketIds.length; i++) {
+        users.push(io.sockets.sockets[socketIds[i]].username);
+    }
+
+    return users;
+}
+
 const listenChatEvent = (socket) => {
     socket.on('new_message', (data) => {
         debug('New message: ', socket.username, '@' , data);
@@ -64,15 +74,27 @@ const listenChatEvent = (socket) => {
     socket.on('all_users', () => {
         debug('Request all users:  ' + socket.username);
 
-        var users = [];
-        const socketIds = Object.keys(io.sockets.sockets);
-        for (var i = 0; i < socketIds.length; i++) {
-            users.push(io.sockets.sockets[socketIds[i]].username);
-        }
+        io.of('/').adapter.customRequest({message: 'get_all_users'}, (err, replies) => {
+            const allUsers = [].concat.apply([], replies);
+            socket.emit('all_users', allUsers);
+        });
 
-        socket.emit('all_users', users);
     });
 };
+
+// on every node
+io.of('/').adapter.customHook = (data, callback) => {
+    if (typeof callback !== 'function'){
+        debug('Invalid callback customHook: ', data, callback);
+        return;
+    }
+
+    if (data && data.message == 'get_all_users') {
+        return callback(getAllUsers());
+    }
+
+    callback();
+}
 
 // Chat socket.io
 io.on('connection', (socket) => {
