@@ -53,7 +53,9 @@ const getAllUsers = () => {
     var users = [];
     const socketIds = Object.keys(io.sockets.sockets);
     for (var i = 0; i < socketIds.length; i++) {
-        users.push(io.sockets.sockets[socketIds[i]].username);
+        if (socketIds[i].username) {
+            users.push(io.sockets.sockets[socketIds[i]].username);
+        }
     }
 
     return users;
