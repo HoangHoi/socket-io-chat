@@ -27,7 +27,10 @@ $(function() {
     var userTyping = [];
     var users = [];
 
-    var socket = io();
+    const serverDomains = ['sv1.hoanghoi.com:1313', 'sv2.hoanghoi.com:1313'];
+    const serverDomain = serverDomains[Math.floor(Math.random()*serverDomains.length)];
+    var socket = io(serverDomain);
+    // var socket = io();
     // var socket = io({
     //     transports: ['polling', 'websocket']
     // });
