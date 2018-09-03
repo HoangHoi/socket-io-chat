@@ -19,6 +19,7 @@ $(function() {
     const $userNameHeader = $('#user-name-header');
     const $userName = $('#user-name');
     const $users = $('#users-list');
+    const $serverName = $('#server-name');
 
     var username;
     var connected = false;
@@ -239,6 +240,7 @@ $(function() {
 
     socket.on('server_name', function(serverName) {
         console.log('Server name: ' + serverName);
+        $serverName.text(serverName);
     });
 
     socket.on('all_users', function(data) {
