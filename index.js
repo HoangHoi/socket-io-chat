@@ -2,7 +2,7 @@ require('dotenv').config();
 let debug = require('debug')('socketio-chat@root');
 let express = require('express');
 let app = express();
-let path = require('path');
+// let path = require('path');
 let server = require('http').createServer(app);
 let io = require('socket.io')(server);
 let redis = require('socket.io-redis');
@@ -14,13 +14,24 @@ const redisPort = process.env.REDIS_PORT || 6379;
 
 io.adapter(redis({ host: redisHost, port: redisPort }));
 
+app.all('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
+
 server.listen(port, () => {
     debug('Server listening at port %d', port);
     debug('Server name: ', serverName);
 });
 
 // Routing
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/public'));
+
+// Health check
+app.head('/health', function (req, res) {
+    res.sendStatus(200);
+});
 
 const checkUserName = (username) => {
     debug(username);
