@@ -1,8 +1,9 @@
 .sidebar {
     position: fixed;
-    margin-top: 42px;
-    top: 0;
-    bottom: 0;
+    margin-top: 5px;
+    top: 42px;
+    bottom: 70px;
+
     right: 0;
     z-index: 100;
     padding: 0px 15px 0 15px;
@@ -11,9 +12,14 @@
     overflow-y: auto;
 }
 
+@media (min-width: 576px) {
+    .sidebar {
+        bottom: 0;
+    }
+}
+
 [role="main"] {
     padding-top: 48px;
-    padding-bottom: 80px;
 }
 
 .input-container {
@@ -41,4 +47,8 @@
 .user-typing-name {
     font-size: 1.1em;
     font-weight: 900;
+}
+
+.typing-alert {
+    padding-bottom: 80px;
 }

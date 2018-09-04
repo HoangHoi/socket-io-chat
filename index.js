@@ -33,7 +33,16 @@ app.head('/health', function (req, res) {
     res.sendStatus(200);
 });
 
+const printTotalConnect = () => {
+    io.of('/').clients((error, clients) => {
+        if (error) throw error;
+        debug('Total connect:', clients.length);
+    });
+}
+
 const checkUserName = (username) => {
+    return true; // Cho cái này vào để test
+
     debug(username);
     if (!username || typeof username != 'string') return false;
     username = username.trim();
@@ -111,6 +120,8 @@ io.of('/').adapter.customHook = (data, callback) => {
 
 // Chat socket.io
 io.on('connection', (socket) => {
+    debug('New connect', socket.id);
+    printTotalConnect();
     socket.emit('server_name', serverName);
 
     let addedUser = false;
@@ -133,6 +144,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         debug('User left: ' + socket.username);
+        printTotalConnect();
         socket.broadcast.emit('user_left', {
             username: socket.username,
         });

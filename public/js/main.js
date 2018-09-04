@@ -104,6 +104,7 @@ $(function() {
         if (userTyping.length > 0) {
             $userTyping.text(userTyping.join(', '));
             $typing.show();
+            window.scrollTo(0, document.body.scrollHeight);
             console.log(userTyping.join(', '));
             return;
         }
