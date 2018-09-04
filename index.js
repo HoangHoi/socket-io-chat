@@ -5,14 +5,14 @@ let app = express();
 // let path = require('path');
 let server = require('http').createServer(app);
 let io = require('socket.io')(server);
-let redis = require('socket.io-redis');
+// let redis = require('socket.io-redis');
 
 const port = process.env.PORT || 3000;
 const serverName = process.env.NAME || 'Unknown';
-const redisHost = process.env.REDIS_HOST;
-const redisPort = process.env.REDIS_PORT || 6379;
+// const redisHost = process.env.REDIS_HOST;
+// const redisPort = process.env.REDIS_PORT || 6379;
 
-io.adapter(redis({ host: redisHost, port: redisPort }));
+// io.adapter(redis({ host: redisHost, port: redisPort }));
 
 app.all('/', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -96,27 +96,28 @@ const listenChatEvent = (socket) => {
     socket.on('all_users', () => {
         debug('Request all users:  ' + socket.username);
 
-        io.of('/').adapter.customRequest({message: 'get_all_users'}, (err, replies) => {
-            const allUsers = [].concat.apply([], replies);
-            socket.emit('all_users', allUsers);
-        });
+        // io.of('/').adapter.customRequest({message: 'get_all_users'}, (err, replies) => {
+        //     const allUsers = [].concat.apply([], replies);
+        //     socket.emit('all_users', allUsers);
+        // });
 
+        return getAllUsers();
     });
 };
 
 // on every node
-io.of('/').adapter.customHook = (data, callback) => {
-    if (typeof callback !== 'function'){
-        debug('Invalid callback customHook: ', data, callback);
-        return;
-    }
+// io.of('/').adapter.customHook = (data, callback) => {
+//     if (typeof callback !== 'function'){
+//         debug('Invalid callback customHook: ', data, callback);
+//         return;
+//     }
 
-    if (data && data.message == 'get_all_users') {
-        return callback(getAllUsers());
-    }
+//     if (data && data.message == 'get_all_users') {
+//         return callback(getAllUsers());
+//     }
 
-    callback();
-}
+//     callback();
+// }
 
 // Chat socket.io
 io.on('connection', (socket) => {
